@@ -3,6 +3,8 @@ package com.system.exams.systemexamsbackend.entities;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -25,13 +27,14 @@ public class User {
     private String username;
     private String password;
     private String name;
-    private String surname;
+    private String lastname;
     private String email;
     private String phone;
     private boolean enabled = true;
     private String profile;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "user")
+    @JsonIgnore
     private Set<UserRole> userRoles = new HashSet<>();
 
     public User() {}
