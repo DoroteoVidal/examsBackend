@@ -9,11 +9,12 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
 @Table(name = "roles")
-@Data
+@Getter @Setter
 public class Role {
     
     @Id
@@ -24,4 +25,9 @@ public class Role {
     private Set<UserRole> userRoles = new HashSet<>();
 
     public Role() {}
+
+    public Role(Long id, String type) {
+        this.id = id;
+        this.type = type;
+    }
 }

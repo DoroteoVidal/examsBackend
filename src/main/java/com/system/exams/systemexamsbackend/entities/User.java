@@ -13,11 +13,12 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
 @Table(name = "users")
-@Data
+@Getter @Setter
 public class User {
     
     @Id
@@ -38,5 +39,16 @@ public class User {
     private Set<UserRole> userRoles = new HashSet<>();
 
     public User() {}
+
+    public User(String username, String password, String name, String lastname, String email, String phone, boolean enabled, String profile) {
+        this.username = username;
+        this.password = password;
+        this.name = name;
+        this.lastname = lastname;
+        this.email = email;
+        this.phone = phone;
+        this.enabled = enabled;
+        this.profile = profile;
+    }
 
 }
