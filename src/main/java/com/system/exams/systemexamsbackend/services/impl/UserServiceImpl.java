@@ -3,6 +3,7 @@ package com.system.exams.systemexamsbackend.services.impl;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.system.exams.systemexamsbackend.entities.User;
@@ -20,16 +21,21 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private RoleRepository roleRepository;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     @Override
     public User save(User user, Set<UserRole> userRoles) throws Exception {
         User localUser = userRepository.findByUsername(user.getUsername());
         if(localUser != null) {
             throw new Exception("This user already exists");
         }else {
+            String encryptedPass = passwordEncoder.encode(user.getPassword());
             for(UserRole ur : userRoles) {
                 roleRepository.save(ur.getRole());
             }
             user.getUserRoles().addAll(userRoles);
+            user.setPassword(encryptedPass);
             localUser = userRepository.save(user);
         }
         return localUser;

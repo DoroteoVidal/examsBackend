@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.system.exams.systemexamsbackend.entities.Role;
 import com.system.exams.systemexamsbackend.entities.User;
 import com.system.exams.systemexamsbackend.entities.UserRole;
+import com.system.exams.systemexamsbackend.security.AuthorityConstant;
 import com.system.exams.systemexamsbackend.services.UserService;
 
 import java.util.HashSet;
@@ -43,7 +44,7 @@ public class UserController {
 
             Role role = new Role();
             role.setId(2L);
-            role.setType("NORMAL");
+            role.setType(AuthorityConstant.USER);
 
             UserRole userRole = new UserRole();
             userRole.setUser(user);
