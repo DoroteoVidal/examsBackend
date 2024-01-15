@@ -26,36 +26,34 @@ import com.system.exams.systemexamsbackend.services.UserService;
 import jakarta.validation.Valid;
 import lombok.Builder;
 import lombok.Data;
-import lombok.RequiredArgsConstructor;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 
-@RequiredArgsConstructor
 @RestController
-@RequestMapping("/auth")
 @CrossOrigin("*")
 public class AuthenticationController {
     
-    private final TokenProvider tokenProvider;
+    @Autowired
+    private TokenProvider tokenProvider;
 
-    private final AuthenticationManagerBuilder authenticationManagerBuilder;
+    @Autowired
+    private AuthenticationManagerBuilder authenticationManagerBuilder;
 
     @Autowired
     private UserService userService;
 
     @PostMapping("/authenticate")
     public ResponseEntity<JwtToken> authenticate(@Valid @RequestBody DTOAuth a){
-        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken( a.getEmail(), a.getPassword());
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(a.getEmail(), a.getPassword());
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        final var jwt = tokenProvider.createToken (authentication );
+        final var jwt = tokenProvider.createToken(authentication);
         HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add( JwtFilter.AUTHORIZATION_HEADER, "Bearer " + jwt );
+        httpHeaders.add(JwtFilter.AUTHORIZATION_HEADER, "Bearer " + jwt);
 
         return new ResponseEntity<>(new JwtToken(jwt), httpHeaders, HttpStatus.OK);
     }

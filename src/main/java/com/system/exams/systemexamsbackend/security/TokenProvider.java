@@ -20,7 +20,7 @@ public class TokenProvider {
     private final String secret = "QJeKx+s7XIv1WbBlj7vJ9CD3Ozj1rB3qjlNZY9ofWKJSaBNBo5r1q9Rru/OWlYb+UHV1n4/LJl1OBYYZZ7rhJEnn5peyHCd+eLJfRdArE37pc+QDIsJlabQtR7tYRa+SnvGRyL01uZsK33+gezV+/GPXBnPTj8fOojDUzJiPAvE=";
     private final Key key;
     private final JwtParser jwtParser;
-    private final long tokenValidity = 28800 * 1000; //8hs de validez
+    private final long tokenValidity = 480000; //8min de validez
 
 
     public TokenProvider() {

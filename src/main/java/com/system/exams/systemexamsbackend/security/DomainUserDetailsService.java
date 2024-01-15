@@ -18,6 +18,7 @@ import java.util.stream.Collectors;
 @Component
 @RequiredArgsConstructor
 public class DomainUserDetailsService implements UserDetailsService {
+    
     private final UserRepository userRepository;
 
     @Override
