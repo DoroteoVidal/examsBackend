@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.system.exams.systemexamsbackend.entities.User;
 import com.system.exams.systemexamsbackend.entities.UserRole;
+import com.system.exams.systemexamsbackend.exceptions.UserFoundException;
 import com.system.exams.systemexamsbackend.repositories.RoleRepository;
 import com.system.exams.systemexamsbackend.repositories.UserRepository;
 import com.system.exams.systemexamsbackend.services.UserService;
@@ -26,9 +27,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User save(User user, Set<UserRole> userRoles) throws Exception {
-        User localUser = userRepository.findByUsername(user.getUsername());
+        User localUser = userRepository.findUserByEmailIgnoreCase(user.getEmail()).get();
         if(localUser != null) {
-            throw new Exception("This user already exists");
+            System.out.println("This user already exists");
+            throw new UserFoundException("This user already exists");
         }else {
             String encryptedPass = passwordEncoder.encode(user.getPassword());
             for(UserRole ur : userRoles) {
