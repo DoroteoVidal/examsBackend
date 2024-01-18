@@ -1,7 +1,11 @@
 package com.system.exams.systemexamsbackend.entities;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -19,7 +23,7 @@ import lombok.Setter;
 @Entity
 @Table(name = "users")
 @Getter @Setter
-public class User {
+public class User implements UserDetails {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -49,6 +53,30 @@ public class User {
         this.phone = phone;
         this.enabled = enabled;
         this.profile = profile;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        Set<Authority> authorities = new HashSet<>();
+        this.userRoles.forEach(userRole -> {
+            authorities.add(new Authority(userRole.getRole().getType()));
+        });
+        return authorities;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
     }
 
 }

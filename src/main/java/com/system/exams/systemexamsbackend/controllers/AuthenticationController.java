@@ -1,5 +1,6 @@
 package com.system.exams.systemexamsbackend.controllers;
 
+import java.security.Principal;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -11,6 +12,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -19,6 +21,7 @@ import com.system.exams.systemexamsbackend.entities.Role;
 import com.system.exams.systemexamsbackend.entities.User;
 import com.system.exams.systemexamsbackend.entities.UserRole;
 import com.system.exams.systemexamsbackend.security.AuthorityConstant;
+import com.system.exams.systemexamsbackend.security.DomainUserDetailsService;
 import com.system.exams.systemexamsbackend.security.JwtFilter;
 import com.system.exams.systemexamsbackend.security.TokenProvider;
 import com.system.exams.systemexamsbackend.services.UserService;
@@ -44,6 +47,14 @@ public class AuthenticationController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private DomainUserDetailsService domainUserDetailsService;
+
+    @GetMapping("/actual-user")
+    public User getActualUser(Principal principal) {
+        return (User) this.domainUserDetailsService.loadUserByEmail(principal.getName());
+    }
 
     @PostMapping("/authenticate")
     public ResponseEntity<JwtToken> authenticate(@Valid @RequestBody DTOAuth a){

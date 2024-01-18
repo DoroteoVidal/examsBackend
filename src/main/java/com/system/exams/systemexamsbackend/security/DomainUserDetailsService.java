@@ -21,12 +21,17 @@ public class DomainUserDetailsService implements UserDetailsService {
     
     private final UserRepository userRepository;
 
+    public UserDetails loadUserByEmail(String email) throws UsernameNotFoundException {
+        return (UserDetails) userRepository.findUserByEmailIgnoreCase(email)
+            .orElseThrow(() -> new UsernameNotFoundException("There is no user with email " + email));
+    }
+
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-            return userRepository
-                    .findUserByEmailIgnoreCase(email)
-                    .map(this::createSpringSecurityUser)
-                    .orElseThrow(() -> new UsernameNotFoundException("No existe el usuario con email " + email ));
+        return userRepository
+                .findUserByEmailIgnoreCase(email)
+                .map(this::createSpringSecurityUser)
+                .orElseThrow(() -> new UsernameNotFoundException("There is no user with email " + email));
     }
 
     private org.springframework.security.core.userdetails.User createSpringSecurityUser(User user){
