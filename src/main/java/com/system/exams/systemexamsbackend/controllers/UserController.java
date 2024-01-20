@@ -79,7 +79,7 @@ public class UserController {
      * @throws Exception
      */
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteById(@PathVariable("id") Long id) throws Exception {
+    public ResponseEntity<?> delete(@PathVariable("id") Long id) throws Exception {
         try{
             return ResponseEntity.status(HttpStatus.NO_CONTENT).body(userService.delete(id));
         }catch(Exception e){
