@@ -33,7 +33,7 @@ public class QuestionServiceImpl implements QuestionService {
                 tmp.setOption2(question.getOption2());
                 tmp.setOption3(question.getOption3());
                 tmp.setOption4(question.getOption4());
-                tmp.setResponse(question.getResponse());
+                tmp.setAnswer(question.getAnswer());
                 tmp.setExam(question.getExam());
                 questionRepository.save(tmp);
                 

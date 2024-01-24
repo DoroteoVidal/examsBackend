@@ -30,7 +30,7 @@ public class Question {
     private String option3;
     private String option4;
 
-    private String response;
+    private String answer;
 
     @ManyToOne(fetch = FetchType.EAGER)
     private Exam exam;

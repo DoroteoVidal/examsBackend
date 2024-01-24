@@ -95,5 +95,17 @@ public class QuestionController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error. The entity you are trying to delete does not exist.");
         }
     }
+
+    @GetMapping("/exam/all/{id}")
+    public ResponseEntity<?> listQuestionsAsAdmin(@PathVariable("id") Long id) {
+        try{
+            Exam exam = new Exam();
+            exam.setId(id);
+            Set<Question> questions = questionService.getExamQuestions(exam);
+            return ResponseEntity.status(HttpStatus.OK).body(questions);
+        }catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Error. Try again later.");
+        }
+    }
     
 }
