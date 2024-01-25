@@ -1,11 +1,13 @@
 package com.system.exams.systemexamsbackend.services.impl;
 
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.system.exams.systemexamsbackend.entities.Category;
 import com.system.exams.systemexamsbackend.entities.Exam;
 import com.system.exams.systemexamsbackend.repositories.ExamRepository;
 import com.system.exams.systemexamsbackend.services.ExamService;
@@ -65,6 +67,35 @@ public class ExamServiceImpl implements ExamService {
         }catch(Exception e) {
             throw new Exception(e.getMessage());
         }
+    }
+
+    @Override
+    public List<Exam> getCategoryExams(Long id) {
+        Category category = new Category();
+        category.setId(id);
+        List<Exam> exams = examRepository.findByCategory(category);
+        if(exams == null) {
+            return null;
+        }
+
+        return exams;
+    }
+
+    @Override
+    public List<Exam> getActiveExams() {
+        return examRepository.findByIsActive(true);
+    }
+
+    @Override
+    public List<Exam> getActiveExamsOfCategory(Long id) {
+        Category category = new Category();
+        category.setId(id);
+        List<Exam> exams = examRepository.findByCategoryAndIsActive(category, true);
+        if(exams == null) {
+            return null;
+        }
+
+        return exams;
     }
     
 }

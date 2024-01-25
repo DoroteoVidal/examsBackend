@@ -68,4 +68,31 @@ public class ExamController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error. The entity you are trying to delete does not exist.");
         }
     }
+
+    @GetMapping("/category/{id}")
+    public ResponseEntity<?> getCategoryExams(@PathVariable("id") Long id) {
+        try{
+            return ResponseEntity.status(HttpStatus.OK).body(examService.getCategoryExams(id));
+        }catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Error. Try again later.");
+        }
+    }
+
+    @GetMapping("/active")
+    public ResponseEntity<?> getActiveExams() {
+        try{
+            return ResponseEntity.status(HttpStatus.OK).body(examService.getActiveExams());
+        }catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Error. Try again later.");
+        }
+    }
+
+    @GetMapping("/category/active/{id}")
+    public ResponseEntity<?> getActiveExamsOfCategory(@PathVariable("id") Long id) {
+        try{
+            return ResponseEntity.status(HttpStatus.OK).body(examService.getActiveExamsOfCategory(id));
+        }catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Error. Try again later.");
+        }
+    }
 }

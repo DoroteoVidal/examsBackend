@@ -1,6 +1,9 @@
 package com.system.exams.systemexamsbackend.services.impl;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.system.exams.systemexamsbackend.entities.Exam;
 import com.system.exams.systemexamsbackend.entities.Question;
+import com.system.exams.systemexamsbackend.repositories.ExamRepository;
 import com.system.exams.systemexamsbackend.repositories.QuestionRepository;
 import com.system.exams.systemexamsbackend.services.QuestionService;
 
@@ -16,6 +20,9 @@ public class QuestionServiceImpl implements QuestionService {
 
     @Autowired
     private QuestionRepository questionRepository;
+
+    @Autowired
+    private ExamRepository examRepository;
 
     @Override
     public Question save(Question question) {
@@ -57,11 +64,6 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     @Override
-    public Set<Question> getExamQuestions(Exam exam) {
-        return questionRepository.findByExam(exam);
-    }
-
-    @Override
     public boolean delete(Long id) throws Exception {
         try{
             if(questionRepository.existsById(id)) {
@@ -73,6 +75,35 @@ public class QuestionServiceImpl implements QuestionService {
         }catch(Exception e) {
             throw new Exception(e.getMessage());
         }
+    }
+
+    @Override
+    public List<Question> listQuestions(Long id) {
+        Exam exam = examRepository.findById(id).get();
+        if(exam == null) {
+            return null;
+        }
+        
+        Set<Question> questions = exam.getQuestions();
+        List<Question> exams = new ArrayList<>(questions);
+        if(exams.size() > Integer.parseInt(exam.getNumberOfQuestions())) {
+            exams = exams.subList(0, Integer.parseInt(exam.getNumberOfQuestions() + 1));
+        }
+        Collections.shuffle(exams);
+
+        return exams;
+    }
+
+    @Override
+    public Set<Question> listQuestionsAsAdmin(Long id) {
+        Exam exam = new Exam();
+        exam.setId(id);
+        Set<Question> questions = questionRepository.findByExam(exam);
+        if(questions == null) {
+            return null;
+        }
+
+        return questions;
     }
     
 }

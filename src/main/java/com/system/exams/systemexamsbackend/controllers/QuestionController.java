@@ -1,10 +1,5 @@
 package com.system.exams.systemexamsbackend.controllers;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,9 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.system.exams.systemexamsbackend.entities.Exam;
 import com.system.exams.systemexamsbackend.entities.Question;
-import com.system.exams.systemexamsbackend.services.ExamService;
 import com.system.exams.systemexamsbackend.services.QuestionService;
 
 @RestController
@@ -30,9 +23,6 @@ public class QuestionController {
 
     @Autowired
     private QuestionService questionService;
-
-    @Autowired
-    private ExamService examService;
 
     @PostMapping("/")
     public ResponseEntity<?> save(@RequestBody Question question) {
@@ -73,15 +63,7 @@ public class QuestionController {
     @GetMapping("/exam/{id}")
     public ResponseEntity<?> listQuestions(@PathVariable("id") Long id) {
         try{
-            Exam exam = examService.getById(id);
-            Set<Question> questions = exam.getQuestions();
-            List<Question> exams = new ArrayList<>(questions);
-            if(exams.size() > Integer.parseInt(exam.getNumberOfQuestions())) {
-                exams = exams.subList(0, Integer.parseInt(exam.getNumberOfQuestions() + 1));
-            }
-            Collections.shuffle(exams);
-
-            return ResponseEntity.status(HttpStatus.OK).body(exams);
+            return ResponseEntity.status(HttpStatus.OK).body(questionService.listQuestions(id));
         }catch (Exception e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Error. Try again later.");
         }
@@ -99,10 +81,7 @@ public class QuestionController {
     @GetMapping("/exam/all/{id}")
     public ResponseEntity<?> listQuestionsAsAdmin(@PathVariable("id") Long id) {
         try{
-            Exam exam = new Exam();
-            exam.setId(id);
-            Set<Question> questions = questionService.getExamQuestions(exam);
-            return ResponseEntity.status(HttpStatus.OK).body(questions);
+            return ResponseEntity.status(HttpStatus.OK).body(questionService.listQuestionsAsAdmin(id));
         }catch (Exception e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Error. Try again later.");
         }
