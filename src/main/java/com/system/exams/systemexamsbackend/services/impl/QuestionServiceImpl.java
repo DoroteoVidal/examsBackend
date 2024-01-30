@@ -2,8 +2,10 @@ package com.system.exams.systemexamsbackend.services.impl;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -104,6 +106,32 @@ public class QuestionServiceImpl implements QuestionService {
         }
 
         return questions;
+    }
+
+    @Override
+    public Map<String, Object> evaluateExam(List<Question> questions) {
+        double maxPoints = 0;
+        Integer correctAnswers = 0;
+        Integer attempts = 0;
+
+        for(Question p : questions) {
+            Question question = questionRepository.findById(p.getId()).get();
+            if(question.getCorrectAnswer().equals(p.getAnswer())) {
+                correctAnswers++;
+                double points = Double.parseDouble(questions.get(0).getExam().getMaxPoints())/questions.size();
+                maxPoints += points;
+            }
+            if(p.getAnswer() != null) {
+                attempts++;
+            }
+        }
+
+        Map<String, Object> answers = new HashMap<>();
+        answers.put("maxPoints", maxPoints);
+        answers.put("correctAnswers", correctAnswers);
+        answers.put("attempts", attempts);
+
+        return answers;
     }
     
 }

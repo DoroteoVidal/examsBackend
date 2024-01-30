@@ -1,5 +1,7 @@
 package com.system.exams.systemexamsbackend.controllers;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -84,6 +86,15 @@ public class QuestionController {
             return ResponseEntity.status(HttpStatus.OK).body(questionService.listQuestionsAsAdmin(id));
         }catch (Exception e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Error. Try again later.");
+        }
+    }
+
+    @PostMapping("/evaluate-exam")
+    public ResponseEntity<?> evaluateExam(@RequestBody List<Question> questions) {
+        try{
+            return ResponseEntity.status(HttpStatus.CREATED).body(questionService.evaluateExam(questions));
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error. The exam could not be evaluated, try again later.");
         }
     }
     
