@@ -4,6 +4,7 @@ import java.security.Principal;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.system.exams.systemexamsbackend.DTO.DTOUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -69,21 +70,9 @@ public class AuthenticationController {
     }
 
     @PostMapping("/sign-in")
-    public ResponseEntity<?> signIn(@Valid @RequestBody User user) throws Exception {
+    public ResponseEntity<?> signIn(@Valid @RequestBody DTOUser dtoUser) throws Exception {
         try{
-            user.setProfile("default.png");
-            Set<UserRole> roles = new HashSet<>();
-
-            Role role = new Role();
-            role.setId(2L);
-            role.setType(AuthorityConstant.USER);
-
-            UserRole userRole = new UserRole();
-            userRole.setUser(user);
-            userRole.setRole(role);
-
-            roles.add(userRole);
-            return ResponseEntity.status(HttpStatus.CREATED).body(userService.save(user, roles));
+            return ResponseEntity.status(HttpStatus.CREATED).body(userService.save(dtoUser));
         }catch(Exception e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"Error. Could not save user.\"}");
         }

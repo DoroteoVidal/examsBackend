@@ -7,20 +7,20 @@ import com.system.exams.systemexamsbackend.entities.Exam;
 
 public interface ExamService {
     
-    public Exam save(Exam exam);
+    Exam save(Exam exam);
 
-    public Exam update(Long id, Exam exam) throws Exception;
+    Exam update(Long id, Exam exam) throws Exception;
 
-    public Set<Exam> getAll();
+    Set<Exam> getAll();
 
-    public Exam getById(Long id);
+    Exam getById(Long id);
 
-    public boolean delete(Long id) throws Exception;
+    boolean delete(Long id) throws Exception;
 
-    public List<Exam> getCategoryExams(Long id);
+    List<Exam> getCategoryExams(Long id);
 
-    public List<Exam> getActiveExams();
+    List<Exam> getActiveExams();
 
-    public List<Exam> getActiveExamsOfCategory(Long id);
+    List<Exam> getActiveExamsOfCategory(Long id);
 
 }

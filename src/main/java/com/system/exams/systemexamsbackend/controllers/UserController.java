@@ -30,39 +30,6 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    /**
-     * 
-     * @param user
-     * @return
-     * @throws Exception
-     */
-    @PostMapping("/")
-    public ResponseEntity<?> save(@RequestBody User user) throws Exception {
-        try{
-            user.setProfile("default.png");
-            Set<UserRole> roles = new HashSet<>();
-
-            Role role = new Role();
-            role.setId(2L);
-            role.setType(AuthorityConstant.USER);
-
-            UserRole userRole = new UserRole();
-            userRole.setUser(user);
-            userRole.setRole(role);
-            
-            roles.add(userRole);
-            return ResponseEntity.status(HttpStatus.CREATED).body(userService.save(user, roles));
-        }catch(Exception e){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"Error. Could not save user.\"}");
-        }
-    }
-
-    /**
-     * 
-     * @param username
-     * @return
-     * @throws Exception
-     */
     @GetMapping("/{username}")
     public ResponseEntity<?> getByUsername(@PathVariable("username") String username) throws Exception {
         try{
@@ -71,13 +38,7 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"error\":\"Error. There is no user with this username.\"}");
         }
     }
-    
-    /**
-     * 
-     * @param id
-     * @return
-     * @throws Exception
-     */
+
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable("id") Long id) throws Exception {
         try{

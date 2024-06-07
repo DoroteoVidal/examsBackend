@@ -6,13 +6,13 @@ import com.system.exams.systemexamsbackend.entities.Category;
 
 public interface CategoryService {
     
-    public Category save(Category category);
+    Category save(Category category);
 
-    public Category update(Long id, Category category) throws Exception;
+    Category update(Long id, Category category) throws Exception;
 
-    public Set<Category> getAll();
+    Set<Category> getAll();
 
-    public Category getById(Long id);
+    Category getById(Long id);
 
-    public boolean delete(Long id) throws Exception;
+    boolean delete(Long id) throws Exception;
 }
